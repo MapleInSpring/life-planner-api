@@ -1,0 +1,9 @@
+---
+applications:
+- instances: 1
+  name: life-planner-api-dev
+  memory: 128M
+  command: flask run -p 8080 -h 0.0.0.0
+  env:
+    FLASK_APP: flaskr
+    FLASK_ENV: development
