@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Resource, Api
 from requests_xml import XMLSession, XML
 import json
@@ -19,6 +19,13 @@ class IdeaList(Resource):
         map_ideas['ideas'] = [self.transform_idea(idea) for idea in rspJson['ideas']['idea']]
 
         return map_ideas
+
+    def post(self):
+        parent = request.json['parent']
+        title = request.json['title']
+        add_ideal_url = 'https://www.mindmeister.com/services/rest?api_key=da85a513e81709500df4387d1fb2c9bf&auth_token=ZAj1q3RiBlr3Xy7CwaIU&map_id=1193541820&method=mm.ideas.insert&parent_id={}&response_format=xml&title={}&api_sig=7a4a59ecd350a6305058d0824f030a6e'.format(parent, title)
+        print(add_ideal_url)
+        r = session.get(add_ideal_url)
 
     def transform_idea(self, idea):
         concise_idea = {
