@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from requests_xml import XMLSession, XML
 import json
+import hashlib
 
 app = Flask(__name__)
 api = Api(app)
@@ -21,11 +22,19 @@ class IdeaList(Resource):
         return map_ideas
 
     def post(self):
-        parent = request.json['parent']
-        title = request.json['title']
-        add_ideal_url = 'https://www.mindmeister.com/services/rest?api_key=da85a513e81709500df4387d1fb2c9bf&auth_token=ZAj1q3RiBlr3Xy7CwaIU&map_id=1193541820&method=mm.ideas.insert&parent_id={}&response_format=xml&title={}&api_sig=7a4a59ecd350a6305058d0824f030a6e'.format(parent, title)
+        params = {}
+        params["api_key"] = 'da85a513e81709500df4387d1fb2c9bf'
+        params["auth_token"] = 'ZAj1q3RiBlr3Xy7CwaIU'
+        params["response_format"] = 'xml'
+        params["method"] = 'mm.ideas.insert'
+        params["map_id"] = 1193541820
+        params["parent_id"] = request.json['parent']
+        params["title"] = request.json['title']
+        params["api_sig"] = self.generate_signing_signature(params)
+
+        add_ideal_url = 'https://www.mindmeister.com/services/rest?' + self.generate_param_query_str(params)
         print(add_ideal_url)
-        r = session.get(add_ideal_url)
+        session.get(add_ideal_url)
 
     def transform_idea(self, idea):
         concise_idea = {
@@ -34,6 +43,24 @@ class IdeaList(Resource):
             'parent': idea['parent']['$'] if idea['parent'] else -1
         }
         return concise_idea
+
+    def generate_signing_signature(self, params):
+        secret_key = '2292dcc3fd240176'
+        param_key_values = []
+        for key, value in params.items():
+            param_key_values.append('{}{}'.format(key, value))
+
+        param_key_values.sort()
+        param_joint_string = ''.join(param_key_values)
+        md5_encode_string = hashlib.md5(str(secret_key + param_joint_string).encode('utf-8'))
+        return md5_encode_string.hexdigest()
+
+    def generate_param_query_str(self, params):
+        param_key_values = []
+        for key, value in params.items():
+            param_key_values.append('{}={}'.format(key, value))
+
+        return '&'.join(param_key_values)
 
 api.add_resource(IdeaList, '/ideas')
 
