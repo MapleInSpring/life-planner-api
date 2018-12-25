@@ -24,7 +24,7 @@ class IdeaList(Resource):
         concise_idea = {
             'id': idea['id']['$'],
             'title': idea['title']['$'],
-            'parent': idea['parent']['$'] if idea['parent'] else ''
+            'parent': idea['parent']['$'] if idea['parent'] else -1
         }
         return concise_idea
 
