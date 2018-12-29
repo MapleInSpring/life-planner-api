@@ -3,6 +3,8 @@ import json
 
 
 class WebUtils:
+    knowledge_map_id = 1193541820
+    action_map_id = 1195047869
 
     @staticmethod
     def generate_param_query_str(params):
@@ -18,7 +20,7 @@ class WebUtils:
         params["api_key"] = 'da85a513e81709500df4387d1fb2c9bf'
         params["auth_token"] = 'ZAj1q3RiBlr3Xy7CwaIU'
         params["response_format"] = 'xml'
-        params["map_id"] = 1193541820
+        params["map_id"] = WebUtils.knowledge_map_id
 
         return params
 
