@@ -1,3 +1,6 @@
+from .models.idea_category import IdeaCategory
+
+
 class Transformer:
 
     @staticmethod
@@ -6,8 +9,10 @@ class Transformer:
 
     @staticmethod
     def transform_idea(idea):
+        idea_icon = idea['icon']['$'] if idea['icon'] else ''
         return {
             'id': idea['id']['$'],
             'title': idea['title']['$'],
-            'parent': idea['parent']['$'] if idea['parent'] else -1
+            'parent': idea['parent']['$'] if idea['parent'] else -1,
+            'category': IdeaCategory(idea_icon).name
         }
