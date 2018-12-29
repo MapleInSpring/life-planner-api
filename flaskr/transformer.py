@@ -2,11 +2,7 @@ class Transformer:
 
     @staticmethod
     def transform_idea_list(res_json):
-        map_ideas = {}
-        map_ideas['mapId'] = res_json['map']['@id']
-        map_ideas['ideas'] = [Transformer.transform_idea(idea) for idea in res_json['ideas']['idea']]
-
-        return map_ideas
+        return [Transformer.transform_idea(idea) for idea in res_json['ideas']['idea']]
 
     @staticmethod
     def transform_idea(idea):
