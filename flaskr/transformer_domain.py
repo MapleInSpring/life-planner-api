@@ -1,11 +1,11 @@
 from .models.idea_category import IdeaCategory
 
 
-class Transformer:
+class TransformerDomain:
 
     @staticmethod
     def transform_idea_list(res_json):
-        return [Transformer.transform_idea(idea) for idea in res_json['ideas']['idea']]
+        return [TransformerDomain.transform_idea(idea) for idea in res_json['ideas']['idea']]
 
     @staticmethod
     def transform_idea(idea):
@@ -14,5 +14,5 @@ class Transformer:
             'id': idea['id']['$'],
             'title': idea['title']['$'],
             'parent': idea['parent']['$'] if idea['parent'] else -1,
-            'category': IdeaCategory(idea_icon).name
+            'category': IdeaCategory(idea_icon)
         }

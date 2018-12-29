@@ -1,5 +1,5 @@
 from .web_utils import WebUtils
-from .transformer import Transformer
+from .transformer_domain import TransformerDomain
 from .mind_auth import MindAuth
 from requests_xml import XMLSession
 
@@ -18,7 +18,7 @@ class MindClient:
         get_map_url = MindClient.base_url + WebUtils.generate_param_query_str(params)
         rspJson = WebUtils.get_res_json(session.get(get_map_url))
 
-        return Transformer.transform_idea_list(rspJson)
+        return TransformerDomain.transform_idea_list(rspJson)
 
     @staticmethod
     def update_idea(parent, title):
