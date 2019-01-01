@@ -8,6 +8,6 @@ class ActionList(Resource):
     def get(self):
         idea_list = MindClient.get_all_ideas()
 
-        actions = [idea for idea in idea_list if idea['category'] != IdeaCategory.DEFAULT]
+        actions = [idea for idea in idea_list if idea['category'] in [IdeaCategory.BOOK, IdeaCategory.ACTION]]
 
         return TransformerDTO.transform_idea_list_dto(actions)
